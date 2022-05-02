@@ -66,7 +66,11 @@ def dirhash(
             if fname in excluded_files:
                 continue
 
-            hashvalues.append(_filehash(os.path.join(root, fname), hash_func))
+            file_abs_path = os.path.join(root, fname)
+            if os.path.islink(file_abs_path) and os.path.isdir(file_abs_path):
+                continue
+
+            hashvalues.append(_filehash(file_abs_path, hash_func))
 
             if include_paths:
                 hasher = hash_func()
